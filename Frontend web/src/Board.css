@@ -1,0 +1,53 @@
+.board-container {
+  background-color: #8b5e3c; /* color madera */
+  background-image: url('/ruta/a/madera.jpg'); /* opcional */
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.board-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* espacio entre grupos */
+}
+
+.player-stand {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: #e0cfa0; /* madera más clara para stand */
+  border-radius: 10px;
+}
+
+.tile {
+  width: 50px;
+  height: 70px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+}
+
+.tile-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.bottom-rectangles-container {
+  position: fixed;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
