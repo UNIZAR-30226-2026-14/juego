@@ -1,0 +1,15 @@
+.tile {
+    width: 45px;
+    height: 65px;
+    background-color: #fdfcf0;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    border: 1px solid #d1d1d1;
+    cursor: pointer;
+    user-select: none
+}
