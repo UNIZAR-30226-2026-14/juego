@@ -24,7 +24,7 @@ export const createDeck = () => {
 
     // Añadir los 2 comodines
     deck.push({ id: 'joker-1', color: 'black', number: 'J' });
-    deck.push({ id: 'joker-2', color: 'black', number: 'J' });
+    deck.push({ id: 'joker-2', color: 'red', number: 'J' });
 
     return shuffle(deck);
 };
