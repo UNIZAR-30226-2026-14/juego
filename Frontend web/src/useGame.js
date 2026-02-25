@@ -14,7 +14,7 @@ export const useGame = () => {
 
     // Dibujamos las fichas
     const drawTile = () => {
-        if (bag.length === 0) return;           // Si no quedan fichas, no hacemos nada
+        if (bag.length === 0 || playerHand.length===20) return;   // Si no quedan fichas o tiene mano llena, no hacemos nada
         const tile = bag[0];                    // Tomamos la primera ficha del mazo
         setBag(bag.slice(1));                   // Actualizamos el mazo eliminando la ficha robada
         setPlayerHand([...playerHand, tile]);   // Añadimos la ficha a la mano del jugador
