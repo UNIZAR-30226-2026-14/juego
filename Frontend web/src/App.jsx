@@ -5,13 +5,12 @@ import Home from './Home.jsx'
 
 function App() {
   const [isHome, setIsHome] = useState(true);
-
   const startGame = () => setIsHome(false);
 
   return (
-    <div>
+    <>
       {isHome ? <Home onStart={startGame}/> : <Board />}
-    </div>
+    </>
   )
 }
 

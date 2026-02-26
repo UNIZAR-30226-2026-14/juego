@@ -9,7 +9,7 @@
 
 /* Cabecera de la página */
 .header {
-  width: 100%;
+  width: 100vw;
   height: 60px;
   display: flex;
   justify-content: center;
@@ -20,6 +20,7 @@
   left: 0;
   z-index: 100;
   background-color: rgba(0, 0, 0, 0.3);
+  outline: 2px solid yellow;
 }
 
 /* Área central de juego */
