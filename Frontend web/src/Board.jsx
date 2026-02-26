@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 import Tile from './Tile.jsx';
+import Hand from './Hand.jsx';
 import { useGame } from './useGame.js';
 import './Board.css';
-import { useDraggable, DndContext } from '@dnd-kit/core';
+import { useDraggable, DndContext, DragOverlay } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import {arrayMove, useSortable, SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 
 //-------------------ESTO LUEGO IRÁ APARTE
-  function DraggableTile({ tile }) { // Versión de ficha ya draggeable
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  function ShortableTile({ tile }) { // Versión de ficha ya draggeable
+    const { attributes, listeners, setNodeRef, transform, transition,isDragging } = useSortable({
       id: tile.id, // El ID único que ya tienes
     });
 
     // Estilo para que el componente se desplace visualmente
     const style = {
-      transform: CSS.Translate.toString(transform),
+      transform: CSS.Translate.toString(transform), transition, touchAction: 'none',
+      opacity: isDragging ? 0 : 1, // La ficha original se vuelve traslúcida
     };
 
     return (
@@ -32,17 +35,33 @@ import { CSS } from '@dnd-kit/utilities';
 function Board() {
   // Obtenemos el estado del juego y las funciones para manipularlo
   const { bag, playerHand, setPlayerHand, drawTile, dealInitialHand } = useGame();
+  const [activeId, setActiveId] = useState(null); // Para rastrear qué ficha se arrastra
 
   // Repartimos las 14 fichas iniciales
   useEffect(() => {
     dealInitialHand();
   }, []);
 
+  
+  function handleDragStart(event) {
+    setActiveId(event.active.id); // Guardamos el ID al empezar
+  }
+  
+
   function handleDragEnd(event) {
-    // Aquí es donde usas tu 'manager' para actualizar la posición
     const { active, over } = event;
     console.log("Ficha movida:", active.id);
+    if (over && active.id !== over.id) {
+      setPlayerHand((items) => {
+        const oldIndex = items.findIndex((t) => t.id === active.id);
+        const newIndex = items.findIndex((t) => t.id === over.id);
+
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+    setActiveId(null);
   }
+  const activeTile = playerHand.find(t => t.id === activeId);
 
   const sortByNumber = () => {
     const sorted = [...playerHand].sort((a,b) => {
@@ -87,7 +106,7 @@ function Board() {
   };
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
       <div className='game-container'>
     
         {/* HEADER: Información del mazo y botón de robar */}
@@ -119,15 +138,27 @@ function Board() {
     
             {/* FICHAS DINÁMICAS (Las que el jugador tiene en la mano) */}
             
-              <div className='hand-container'>
+            <SortableContext items={playerHand.map(tile => tile.id)} strategy={rectSortingStrategy}>
+              <Hand id={'sd'} children={playerHand}>
                 {/* Renderizamos cada ficha de la mano del jugador usando Tile */}
                 {playerHand.map((tile) => (
-                  <DraggableTile key={tile.id} tile={tile} />
+                  <ShortableTile key={tile.id} tile={tile} />
                 ))}
-              </div>
-              
+              </Hand>
+            </SortableContext>
           </div>
       </div>
+
+      {/* ESTO ES LO QUE PERMITE EL ARRASTRE LIBRE */}
+    <DragOverlay zIndex={1000}>
+      {activeId ? (
+        <Tile 
+          number={activeTile.number} 
+          color={activeTile.color} 
+          
+        />
+      ) : null}
+    </DragOverlay>
     </DndContext>
   );
 }
