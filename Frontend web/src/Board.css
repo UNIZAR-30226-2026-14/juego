@@ -68,6 +68,7 @@
   left: auto;
   cursor: pointer;
   transition: transform 0.2s ease;
+  user-select: none;
   z-index: 100;
 }
 
@@ -150,6 +151,7 @@
   justify-content: center;
   align-items: center;
   color: black;
+  user-select: none;
 }
 
 /* Efecto hover para que se note que son botones */
